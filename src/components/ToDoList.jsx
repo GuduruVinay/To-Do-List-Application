@@ -2,7 +2,7 @@ import ToDoItem from "./ToDoItem"
 
 function ToDoList({ todos, onDelete, onToggle, onEdit }){
     if (todos.length === 0) {
-        return <p className="text-center text-gray-500 mt-6">No tasks yet !</p>
+        return <p className="text-center text-gray-500 mt-6">No Tasks Yet !</p>
     }
 
     return (

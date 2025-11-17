@@ -54,7 +54,7 @@ function ToDoItem({ todo, onDelete, onToggle, onEdit }){
                                 setIsEditing(true)
                                 setEditText(text)
                             }}
-                            className="px-3 py-1 border rounded text-blue-600 border-blue-300 hover:bg-blue-50"
+                            className="mx-3 px-3 py-1 border rounded text-blue-600 border-blue-300 hover:bg-blue-50"
                         >
                             Edit
                         </button>
@@ -71,7 +71,7 @@ function ToDoItem({ todo, onDelete, onToggle, onEdit }){
                     <>
                         <button 
                             onClick={handleSave}
-                            className="px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700"
+                            className="mx-3 px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700"
                         >
                             Save
                         </button>

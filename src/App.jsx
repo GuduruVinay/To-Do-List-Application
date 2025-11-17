@@ -37,11 +37,34 @@ function App() {
     setTodos((prev) => prev.map((t) => (t.id === id ? { ...t, text: newText } : t)))
   }
 
+  // function: clear completed tasks
+  const handleClearCompleted = () => {
+    setTodos((prev) => prev.filter((todo) => !todo.completed))
+  }
+
   return (
     <div className="min-h-screen bg-gray-100 py-10 px-4 flex justify-center">
       <div className="w-full max-w-xl bg-white shadow-lg rounded-xl p-6">
         <Header />
         <main>
+          <div className="flex justify-between items-center mt-4">
+            <span className="text-sm bg-gray-100 px-3 py-1 rounded-full" /*className="text-gray-600"*/>
+              {todos.length - todos.filter((t) => !t.completed).length} / {todos.length} Tasks Completed
+            </span>
+            <span className="text-sm bg-gray-100 px-3 py-1 rounded-full" /*className="text-gray-600"*/>
+              {todos.filter((t) => !t.completed).length} / {todos.length} Tasks Remaining
+            </span>
+            <button 
+              onClick={handleClearCompleted}
+              className="text-red-600 px-3 py-1 border border-red-300 rounded hover:bg-red-50"
+            >Clear Completed</button>
+          </div>
+          <div className="mt-2 h-2 bg-gray-200 rounded-full">
+            <div 
+              className="h-2 bg-green-500 rounded-full transition-all"
+              style={{width:`${((todos.length - todos.filter((t) => !t.completed).length) / todos.length) * 100}%`}}
+            ></div>
+          </div>
           <form onSubmit={handleAdd} className="flex gap-3 mt-4">
             <input
               className="flex-1 border border-gray-300 rounded-lg px-4 py-2" 

@@ -4,12 +4,41 @@ import ToDoList from './components/ToDoList'
 import './App.css'
 
 function App() {
-  const [todos, setTodos] = useState([{id:1, text:"Task 1"}, {id:2, text:"Task 2"}, {id:3, text:"Task 3"}])
+  // state: list of todos
+  const [todos, setTodos] = useState([])
+  // state: input for new todo
+  const [newText, setNewText] = useState("")
+  
+  // function: add todo
+  const handleAdd = (e) => {
+    e.preventDefault();
+    const text = newText.trim();
+    if (!text) return;
+    const newToDo = {
+      id: Date.now().toString(),
+      text,
+      completed: false,
+    };
+    setTodos((prev) => [newToDo, ...prev]);
+    setNewText("");
+  }
+
   return (
-    <>
+    <div>
       <Header />
-      <ToDoList todos={todos}/>
-    </>
+      <main>
+        <form onSubmit={handleAdd}>
+          <input 
+            type="text" 
+            placeholder="Add a new task..."
+            value={newText}
+            onChange={(e) => setNewText(e.target.value)}
+          />
+          <button type="submit">Add</button>
+        </form>
+        <ToDoList todos={todos} />
+      </main>
+    </div>
   )
 }
 

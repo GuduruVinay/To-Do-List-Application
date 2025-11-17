@@ -7,6 +7,8 @@ function App() {
   const [todos, setTodos] = useState([])
   // state: input for new todo
   const [newText, setNewText] = useState("")
+  // state: filter todo
+  const [filterTodos, setFilterTodos] = useState("all")
   
   // function: add todo
   const handleAdd = (e) => {
@@ -42,6 +44,13 @@ function App() {
     setTodos((prev) => prev.filter((todo) => !todo.completed))
   }
 
+  // function: filtered todos
+  const filteredTodos = todos.filter((todo) => {
+    if (filterTodos === "active") return !todo.completed
+    if (filterTodos === "completed") return todo.completed
+    return true
+  })
+
   return (
     <div className="min-h-screen bg-gray-100 py-10 px-4 flex justify-center">
       <div className="w-full max-w-xl bg-white shadow-lg rounded-xl p-6">
@@ -65,6 +74,21 @@ function App() {
               style={{width:`${((todos.length - todos.filter((t) => !t.completed).length) / todos.length) * 100}%`}}
             ></div>
           </div>
+          <div className="flex gap-2 mt-3">
+            {["all", "active", "completed"].map((type) => (
+              <button
+                key={type}
+                onClick={() => setFilterTodos(type)}
+                className={`px-3 py-1 rounded border ${
+                  filterTodos === type
+                   ? "bg-blue-600 text-white border-blue-600"
+                   : "border-gray-300 text-gray-700 hover:bg-gray-100"
+                }`}
+              >
+                {type.charAt(0).toUpperCase() + type.slice(1)}
+              </button>
+            ))}
+          </div>
           <form onSubmit={handleAdd} className="flex gap-3 mt-4">
             <input
               className="flex-1 border border-gray-300 rounded-lg px-4 py-2" 
@@ -81,7 +105,7 @@ function App() {
             </button>
           </form>
           <ToDoList 
-            todos={todos}
+            todos={filteredTodos}
             onDelete={handleDelete}
             onToggle={handleToggle}
             onEdit={handleEdit}

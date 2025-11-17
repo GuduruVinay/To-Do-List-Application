@@ -2,13 +2,11 @@ import ToDoItem from "./ToDoItem"
 
 function ToDoList({ todos, onDelete, onToggle, onEdit }){
     if (todos.length === 0) {
-        return (
-            <p>No tasks yet. Add one above!</p>
-        )
+        return <p className="text-center text-gray-500 mt-6">No tasks yet !</p>
     }
 
     return (
-        <ul>
+        <ul className="mt-6 space-y-3">
             {
                 todos.map((todo) => (
                     <ToDoItem

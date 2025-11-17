@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import Header from './components/Header'
 import ToDoList from './components/ToDoList'
-import './App.css'
 
 function App() {
   // state: list of todos
@@ -39,25 +38,33 @@ function App() {
   }
 
   return (
-    <div>
-      <Header />
-      <main>
-        <form onSubmit={handleAdd}>
-          <input 
-            type="text" 
-            placeholder="Add a new task..."
-            value={newText}
-            onChange={(e) => setNewText(e.target.value)}
+    <div className="min-h-screen bg-gray-100 py-10 px-4 flex justify-center">
+      <div className="w-full max-w-xl bg-white shadow-lg rounded-xl p-6">
+        <Header />
+        <main>
+          <form onSubmit={handleAdd} className="flex gap-3 mt-4">
+            <input
+              className="flex-1 border border-gray-300 rounded-lg px-4 py-2" 
+              type="text" 
+              placeholder="Add a new task..."
+              value={newText}
+              onChange={(e) => setNewText(e.target.value)}
+            />
+            <button
+              className="bg-blue-600 text-white px-5 py-2 rounded-lg hover:bg-blue-700" 
+              type="submit"
+            >
+              Add
+            </button>
+          </form>
+          <ToDoList 
+            todos={todos}
+            onDelete={handleDelete}
+            onToggle={handleToggle}
+            onEdit={handleEdit}
           />
-          <button type="submit">Add</button>
-        </form>
-        <ToDoList 
-          todos={todos}
-          onDelete={handleDelete}
-          onToggle={handleToggle}
-          onEdit={handleEdit}
-        />
-      </main>
+        </main>
+      </div>
     </div>
   )
 }

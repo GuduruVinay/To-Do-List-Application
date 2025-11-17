@@ -23,6 +23,21 @@ function App() {
     setNewText("");
   }
 
+  // function: delete todo
+  const handleDelete = (id) => {
+    setTodos((prev) => prev.filter((t) => t.id !== id));
+  }
+
+  // function: toggle completed
+  const handleToggle = (id) => {
+    setTodos((prev) => prev.map((t) => (t.id === id ? { ...t, completed: !t.completed } : t)))
+  }
+
+  // function: edit todo
+  const handleEdit = (id, newText) => {
+    setTodos((prev) => prev.map((t) => (t.id === id ? { ...t, text: newText } : t)))
+  }
+
   return (
     <div>
       <Header />
@@ -36,7 +51,12 @@ function App() {
           />
           <button type="submit">Add</button>
         </form>
-        <ToDoList todos={todos} />
+        <ToDoList 
+          todos={todos}
+          onDelete={handleDelete}
+          onToggle={handleToggle}
+          onEdit={handleEdit}
+        />
       </main>
     </div>
   )

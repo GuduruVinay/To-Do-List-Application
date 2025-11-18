@@ -97,10 +97,10 @@ function App() {
           </div>
           <div className="flex justify-between items-center mt-4">
             <span className="text-sm bg-gray-100 dark:bg-gray-700 dark:text-gray-200 px-3 py-1 rounded-full">
-              {todos.length - todos.filter((t) => !t.completed).length} / {todos.length} Tasks Completed
+              {todos.filter((t) => !t.completed).length} / {todos.length} Tasks Remaining
             </span>
             <span className="text-sm bg-gray-100 dark:bg-gray-700 dark:text-gray-200 px-3 py-1 rounded-full">
-              {todos.filter((t) => !t.completed).length} / {todos.length} Tasks Remaining
+              {todos.length - todos.filter((t) => !t.completed).length} / {todos.length} Tasks Completed
             </span>
             <button 
               onClick={handleClearCompleted}

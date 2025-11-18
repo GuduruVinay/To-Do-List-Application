@@ -1,6 +1,9 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Header from './components/Header'
 import ToDoList from './components/ToDoList'
+
+const LOCAL_KEY = "react-todo-vite.todos"
+const THEME_KEY = "theme"
 
 function App() {
   // state: list of todos
@@ -9,6 +12,34 @@ function App() {
   const [newText, setNewText] = useState("")
   // state: filter todo
   const [filterTodos, setFilterTodos] = useState("all")
+  // state: loaded todo
+  const [loaded, setLoaded] = useState(false)
+
+  useEffect(() => {
+    const raw = localStorage.getItem(LOCAL_KEY)
+    if(raw) setTodos(JSON.parse(raw))
+    setLoaded(true)
+  }, [])
+
+  useEffect(() => {
+    if(!loaded) return
+    localStorage.setItem(LOCAL_KEY, JSON.stringify(todos))
+  }, [todos, loaded])
+
+  const [isDark, setIsDark] = useState(() => {
+    return localStorage.getItem(THEME_KEY) === "dark"
+  })
+
+  // effect: dark mode
+  useEffect(() => {
+    if(isDark){
+      document.documentElement.classList.add("dark")
+      localStorage.setItem(THEME_KEY, "dark")
+    } else{
+      document.documentElement.classList.remove("dark")
+      localStorage.setItem(THEME_KEY, "light")
+    }
+  }, [isDark])
   
   // function: add todo
   const handleAdd = (e) => {
@@ -52,23 +83,31 @@ function App() {
   })
 
   return (
-    <div className="min-h-screen bg-gray-100 py-10 px-4 flex justify-center">
-      <div className="w-full max-w-xl bg-white shadow-lg rounded-xl p-6">
+    <div className="min-h-screen bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100 py-10 px-4 flex justify-center">
+      <div className="w-full max-w-2xl bg-white dark:bg-gray-800 shadow-lg rounded-xl p-6">
         <Header />
         <main>
+          <div className="flex justify-end">
+            <button
+              onClick={() => setIsDark(!isDark)}
+              className="px-3 py-1 border rounded border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700"
+            >
+              {isDark ? "Light Mode" : "Dark Mode"}
+            </button>
+          </div>
           <div className="flex justify-between items-center mt-4">
-            <span className="text-sm bg-gray-100 px-3 py-1 rounded-full" /*className="text-gray-600"*/>
+            <span className="text-sm bg-gray-100 dark:bg-gray-700 dark:text-gray-200 px-3 py-1 rounded-full">
               {todos.length - todos.filter((t) => !t.completed).length} / {todos.length} Tasks Completed
             </span>
-            <span className="text-sm bg-gray-100 px-3 py-1 rounded-full" /*className="text-gray-600"*/>
+            <span className="text-sm bg-gray-100 dark:bg-gray-700 dark:text-gray-200 px-3 py-1 rounded-full">
               {todos.filter((t) => !t.completed).length} / {todos.length} Tasks Remaining
             </span>
             <button 
               onClick={handleClearCompleted}
-              className="text-red-600 px-3 py-1 border border-red-300 rounded hover:bg-red-50"
+              className="text-red-600 px-3 py-1 border border-red-300 rounded hover:bg-red-50 dark:hover:bg-red-900/30"
             >Clear Completed</button>
           </div>
-          <div className="mt-2 h-2 bg-gray-200 rounded-full">
+          <div className="mt-2 h-2 bg-gray-200 dark:bg-gray-700 rounded-full">
             <div 
               className="h-2 bg-green-500 rounded-full transition-all"
               style={{width:`${((todos.length - todos.filter((t) => !t.completed).length) / todos.length) * 100}%`}}
@@ -81,8 +120,8 @@ function App() {
                 onClick={() => setFilterTodos(type)}
                 className={`px-3 py-1 rounded border ${
                   filterTodos === type
-                   ? "bg-blue-600 text-white border-blue-600"
-                   : "border-gray-300 text-gray-700 hover:bg-gray-100"
+                  ? "bg-blue-600 text-white border-blue-600"
+                  : "border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700"
                 }`}
               >
                 {type.charAt(0).toUpperCase() + type.slice(1)}
@@ -91,7 +130,7 @@ function App() {
           </div>
           <form onSubmit={handleAdd} className="flex gap-3 mt-4">
             <input
-              className="flex-1 border border-gray-300 rounded-lg px-4 py-2" 
+              className="flex-1 border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-2 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100" 
               type="text" 
               placeholder="Add a new task..."
               value={newText}
